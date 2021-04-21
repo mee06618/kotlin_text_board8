@@ -1,6 +1,7 @@
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+fun readLineSplit() = readLine()!!.split(" ").map{it.toString()}
 fun readLineTrim() = readLine()!!.trim()
 
 fun main() {
@@ -13,14 +14,14 @@ fun main() {
 
     loop@ while (true) {
         print("명령어) ")
-        val command = readLineTrim()
-
-        when (command) {
-            "system exit" -> {
+        val command =readLineSplit()
+        
+        when (command[0]+command[1]) {
+            "systemexit" -> {
                 println("프로그램을 종료합니다.")
                 break@loop
             }
-            "article write" -> {
+            "articlewrite" -> {
                 val id = articlesLastId + 1
                 print("제목 : ")
                 val title = readLineTrim()
@@ -39,16 +40,26 @@ fun main() {
 
                 articlesLastId = id
             }
-            "article list" -> {
+            "articlelist" -> {
                 println("번호 / 제목")
 
                 for ( article in articles ) {
                     println("${article.id} / ${article.title} / ${article.body} / ${article.regDate} / ${article.updateDate}")
                 }
             }
+
+            "articledelete" -> {
+
+                if(articles.any { it.id == command[2].toInt() })
+                articles.removeAt(command[2].toInt()-1)
+                else{
+                    println("${command[2]} is not exist")
+                }
+            }
             else -> {
                 println("`$command` 은(는) 존재하지 않는 명령어 입니다.")
             }
+
         }
     }
 
