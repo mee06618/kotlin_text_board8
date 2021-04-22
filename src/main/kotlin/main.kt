@@ -1,5 +1,7 @@
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 fun readLineSplit() = readLine()!!.split(" ").map{it.toString()}
 fun readLineTrim() = readLine()!!.trim()
@@ -50,8 +52,31 @@ fun main() {
 
             "articledelete" -> {
 
-                if(articles.any { it.id == command[2].toInt() })
-                articles.removeAt(command[2].toInt()-1)
+                if(articles.any { it.id == command[2].toInt() }) {
+                    println("${command[2]} was deleted")
+                    articles.removeAt(command[2].toInt() - 1)
+                }
+                else{
+                    println("${command[2]} is not exist")
+                }
+            }
+            "articlemodify" -> {
+                println("${command[2]} is modify")
+
+                if(articles.any { it.id == command[2].toInt() }) {
+                    print("새제목 : ")
+                    val title = readLineTrim()
+                    print("새내용 : ")
+                    val body = readLineTrim()
+                    val num =articles[command[2].toInt()-1].id
+                    val currentDateTime= Calendar.getInstance().time
+                    val update = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentDateTime)
+                    val reg=articles[command[2].toInt()-1].regDate
+                    val temp=Article(num,title,body,reg,update)
+                    articles.removeAt(command[2].toInt()-1)
+                    articles.add(command[2].toInt()-1,temp)
+
+                }
                 else{
                     println("${command[2]} is not exist")
                 }
